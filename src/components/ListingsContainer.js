@@ -1,11 +1,23 @@
 import React from "react";
-// import ListingCard from "./ListingCard";
+import { useEffect } from "react/cjs/react.development";
+import ListingCard from "./ListingCard";
 
-function ListingsContainer() {
+function ListingsContainer({listings, onDeleteListing}) {
+
+  function handleDeleteListing(listing) {
+    fetch(`http://localhost:6001/listings/${listing.id}`, {
+      method: "DELETE",
+    })
+      .then((r) => r.json())
+      .then(() => onDeleteListing(listing));
+  }
+
   return (
     <main>
       <ul className="cards">
-        {/* use the ListingCard component to display listings */}
+        {listings.map((listing) => (
+          <ListingCard key={listing.id} listing={listing} deleteListing={handleDeleteListing} />
+        ))}
       </ul>
     </main>
   );
